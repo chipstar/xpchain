@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=XPChain Core
+Comment=Connect to the XPChain P2P Network
+Comment[de]=Verbinde mit dem XPChain peer-to-peer Netzwerk
+Comment[fr]=XPChain, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=XPChain, eşten eşe kriptografik sanal para birimi
+Exec=xpchain-qt %u
+Terminal=false
+Type=Application
+Icon=xpchain128
+MimeType=x-scheme-handler/xpchain;
+Categories=Office;Finance;
+StartupWMClass=XPChain-qt
