@@ -1,0 +1,6 @@
+usr/local/bin/xpchain-qt usr/bin
+share/pixmaps/xpchain32.xpm usr/share/pixmaps
+share/pixmaps/xpchain16.xpm usr/share/pixmaps
+share/pixmaps/xpchain128.png usr/share/pixmaps
+debian/xpchain-qt.desktop usr/share/applications
+debian/xpchain-qt.protocol usr/share/kde4/services/
