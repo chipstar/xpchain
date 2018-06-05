@@ -1,0 +1,33 @@
+# /etc/conf.d/xpchaind: config file for /etc/init.d/xpchaind
+
+# Config file location
+#XPCHAIND_CONFIGFILE="/etc/xpchain/xpchain.conf"
+
+# What directory to write pidfile to?  (created and owned by $XPCHAIND_USER)
+#XPCHAIND_PIDDIR="/var/run/xpchaind"
+
+# What filename to give the pidfile
+#XPCHAIND_PIDFILE="${XPCHAIND_PIDDIR}/xpchaind.pid"
+
+# Where to write xpchaind data (be mindful that the blockchain is large)
+#XPCHAIND_DATADIR="/var/lib/xpchaind"
+
+# User and group to own xpchaind process
+#XPCHAIND_USER="xpchain"
+#XPCHAIND_GROUP="xpchain"
+
+# Path to xpchaind executable
+#XPCHAIND_BIN="/usr/bin/xpchaind"
+
+# Nice value to run xpchaind under
+#XPCHAIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#XPCHAIND_OPTS=""
+
+# The timeout in seconds OpenRC will wait for xpchaind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+XPCHAIND_SIGTERM_TIMEOUT=60
