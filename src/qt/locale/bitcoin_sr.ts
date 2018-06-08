@@ -138,8 +138,8 @@
         <translation>Промени &amp;лозинку...</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
-        <translation>Пошаљите новац на bitcoin адресу</translation>
+        <source>Send coins to a XPChain address</source>
+        <translation>Пошаљите новац на xpchain адресу</translation>
     </message>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
@@ -470,7 +470,7 @@
     </message>
     </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>xpchain-core</name>
     <message>
         <source>Options:</source>
         <translation>Opcije</translation>
