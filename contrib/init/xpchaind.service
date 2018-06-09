@@ -8,7 +8,7 @@
 # /etc/xpchain/xpchain.conf
 
 [Unit]
-Description=Bitcoin daemon
+Description=XPChain daemon
 After=network.target
 
 [Service]
