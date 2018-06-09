@@ -54,7 +54,7 @@ Patch0:		bitcoin-0.12.0-libressl.patch
 
 
 %description
-Bitcoin is a digital cryptographic currency that uses peer-to-peer technology to
+XPChain is a digital cryptographic currency that uses peer-to-peer technology to
 operate with no central authority or banks; managing transactions and the
 issuing of bitcoins is carried out collectively by the network.
 
@@ -79,17 +79,17 @@ BuildRequires:	%{_bindir}/inkscape
 BuildRequires:	%{_bindir}/convert
 
 %description core
-Bitcoin is a digital cryptographic currency that uses peer-to-peer technology to
+XPChain is a digital cryptographic currency that uses peer-to-peer technology to
 operate with no central authority or banks; managing transactions and the
 issuing of bitcoins is carried out collectively by the network.
 
 This package contains the Qt based graphical client and node. If you are looking
-to run a Bitcoin wallet, this is probably the package you want.
+to run a XPChain wallet, this is probably the package you want.
 %endif
 
 
 %package libs
-Summary:	Bitcoin shared libraries
+Summary:	XPChain shared libraries
 Group:		System Environment/Libraries
 
 %description libs
@@ -134,7 +134,7 @@ If you use the graphical bitcoin-core client then you almost certainly do not
 need this package.
 
 %package utils
-Summary:	Bitcoin utilities
+Summary:	XPChain utilities
 Group:		Applications/System
 
 %description utils
@@ -209,7 +209,7 @@ touch -a -m -t 201504280000 %{buildroot}%{_sysconfdir}/sysconfig/bitcoin
 mkdir -p %{buildroot}%{_unitdir}
 cat <<EOF > %{buildroot}%{_unitdir}/bitcoin.service
 [Unit]
-Description=Bitcoin daemon
+Description=XPChain daemon
 After=syslog.target network.target
 
 [Service]
@@ -265,10 +265,10 @@ mkdir -p %{buildroot}%{_datadir}/applications
 cat <<EOF > %{buildroot}%{_datadir}/applications/bitcoin-core.desktop
 [Desktop Entry]
 Encoding=UTF-8
-Name=Bitcoin
-Comment=Bitcoin P2P Cryptocurrency
-Comment[fr]=Bitcoin, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=Bitcoin, eşten eşe kriptografik sanal para birimi
+Name=XPChain
+Comment=XPChain P2P Cryptocurrency
+Comment[fr]=XPChain, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=XPChain, eşten eşe kriptografik sanal para birimi
 Exec=bitcoin-qt %u
 Terminal=false
 Type=Application
@@ -322,7 +322,7 @@ test/functional/test_runner.py --extended
 getent group bitcoin >/dev/null || groupadd -r bitcoin
 getent passwd bitcoin >/dev/null ||
 	useradd -r -g bitcoin -d /var/lib/bitcoin -s /sbin/nologin \
-	-c "Bitcoin wallet server" bitcoin
+	-c "XPChain wallet server" bitcoin
 exit 0
 
 %post server
