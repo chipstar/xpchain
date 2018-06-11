@@ -130,7 +130,7 @@ couldn't mess with the sources.
 
 Setup
 ---------
-Configuring the github-merge tool for the bitcoin repository is done in the following way:
+Configuring the github-merge tool for the xpchain repository is done in the following way:
 
     git config githubmerge.repository xpchain/xpchain
     git config githubmerge.testcmd "make -j4 check" (adapt to whatever you want to use for testing)
@@ -139,7 +139,7 @@ Configuring the github-merge tool for the bitcoin repository is done in the foll
 optimize-pngs.py
 ================
 
-A script to optimize png files in the bitcoin
+A script to optimize png files in the xpchain
 repository (requires pngcrush).
 
 security-check.py and test-security-check.py
