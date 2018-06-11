@@ -13,7 +13,7 @@ Construct a linear, no-fork, best version of the blockchain.
 
 ### [Qos](/contrib/qos) ###
 
-A Linux bash script that will set up traffic control (tc) to limit the outgoing bandwidth for connections to the XPChain network. This means one can have an always-on bitcoind instance running, and another local bitcoind/bitcoin-qt instance which connects to this node and receives blocks from it.
+A Linux bash script that will set up traffic control (tc) to limit the outgoing bandwidth for connections to the XPChain network. This means one can have an always-on xpchaind instance running, and another local xpchaind/xpchain-qt instance which connects to this node and receives blocks from it.
 
 ### [Seeds](/contrib/seeds) ###
 Utility to generate the pnSeed[] array that is compiled into the client.
@@ -22,8 +22,8 @@ Build Tools and Keys
 ---------------------
 
 ### [Debian](/contrib/debian) ###
-Contains files used to package bitcoind/bitcoin-qt
-for Debian-based Linux systems. If you compile bitcoind/bitcoin-qt yourself, there are some useful files here.
+Contains files used to package xpchaind/xpchain-qt
+for Debian-based Linux systems. If you compile xpchaind/xpchain-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
 Files used during the gitian build process. For more information about gitian, see the [the XPChain Core documentation repository](https://github.com/bitcoin-core/docs).
@@ -35,7 +35,7 @@ PGP keys used for signing XPChain Core [Gitian release](/doc/release-process.md)
 Scripts and notes for Mac builds.
 
 ### [RPM](/contrib/rpm) ###
-RPM spec file for building bitcoin-core on RPM based distributions.
+RPM spec file for building xpchain-core on RPM based distributions.
 
 ### [Gitian-build](/contrib/gitian-build.sh) ###
 Script for running full Gitian builds.
