@@ -256,7 +256,8 @@ class CompactBlocksTest(BitcoinTestFramework):
         node.generate(101)
         num_transactions = 25
         address = node.getnewaddress()
-        if use_witness_address:
+        validate = node.validateaddress(address)
+        if use_witness_address and not validate["iswitness"]:
             # Want at least one segwit spend, so move all funds to
             # a witness address.
             address = node.addwitnessaddress(address)
