@@ -26,7 +26,7 @@ Contains files used to package xpchaind/xpchain-qt
 for Debian-based Linux systems. If you compile xpchaind/xpchain-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Files used during the gitian build process. For more information about gitian, see the [the XPChain Core documentation repository](https://github.com/bitcoin-core/docs).
+Files used during the gitian build process. For more information about gitian, see the [the XPChain Core documentation repository](https://github.com/xpchain-core/docs).
 
 ### [Gitian-keys](/contrib/gitian-keys)
 PGP keys used for signing XPChain Core [Gitian release](/doc/release-process.md) results.
