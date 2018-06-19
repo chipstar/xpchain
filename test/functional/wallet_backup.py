@@ -42,6 +42,8 @@ class WalletBackupTest(BitcoinTestFramework):
         self.setup_clean_chain = True
         # nodes 1, 2,3 are spenders, let's give them a keypool=100
         self.extra_args = [["-keypool=100"], ["-keypool=100"], ["-keypool=100"], []]
+        # Total burned fee for transactions sent
+        self.burned_fees = 0
 
     def setup_network(self, split=False):
         self.setup_nodes()
@@ -54,7 +56,9 @@ class WalletBackupTest(BitcoinTestFramework):
     def one_send(self, from_node, to_address):
         if (randint(1,2) == 1):
             amount = Decimal(randint(1,10)) / Decimal(10)
-            self.nodes[from_node].sendtoaddress(to_address, amount)
+            txid = self.nodes[from_node].sendtoaddress(to_address, amount)
+            # gettransaction response "fee" is negative value
+            self.burned_fees -= self.nodes[from_node].gettransaction(txid)["fee"]
 
     def do_one_round(self):
         a0 = self.nodes[0].getnewaddress()
@@ -140,7 +144,8 @@ class WalletBackupTest(BitcoinTestFramework):
 
         # At this point, there are 214 blocks (103 for setup, then 10 rounds, then 101.)
         # 114 are mature, so the sum of all wallets should be 114 * 50 = 5700.
-        assert_equal(total, 5700)
+        # The fee is subtracted because it is not returned to the miners
+        assert_equal(total, 5700 - self.burned_fees)
 
         ##
         # Test restoring spender wallets from backups
