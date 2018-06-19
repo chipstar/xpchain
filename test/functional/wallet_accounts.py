@@ -69,10 +69,9 @@ class WalletAccountsTest(BitcoinTestFramework):
         node.generate(1)
 
         # we want to reset so that the "" account has what's expected.
-        # otherwise we're off by exactly the fee amount as that's mined
-        # and matures in the next 100 blocks
-        node.sendfrom("", common_address, fee)
+        assert_equal(node.getbalance(""), 50)
         amount_to_send = 1.0
+        send_txs = []
 
         # Create accounts and make sure subsequent account API calls
         # recognize the account/address associations.
@@ -84,7 +83,7 @@ class WalletAccountsTest(BitcoinTestFramework):
         # Send a transaction to each account, and make sure this forces
         # getaccountaddress to generate a new receiving address.
         for account in accounts:
-            node.sendtoaddress(account.receive_address, amount_to_send)
+            send_txs.append(node.sendtoaddress(account.receive_address, amount_to_send))
             account.add_receive_address(node.getaccountaddress(account.name))
             account.verify(node)
 
@@ -98,7 +97,7 @@ class WalletAccountsTest(BitcoinTestFramework):
         # Check that sendfrom account reduces listaccounts balances.
         for i, account in enumerate(accounts):
             to_account = accounts[(i+1) % len(accounts)]
-            node.sendfrom(account.name, to_account.receive_address, amount_to_send)
+            send_txs.append(node.sendfrom(account.name, to_account.receive_address, amount_to_send))
         node.generate(1)
         for account in accounts:
             account.add_receive_address(node.getaccountaddress(account.name))
@@ -107,11 +106,17 @@ class WalletAccountsTest(BitcoinTestFramework):
             node.move(account.name, "", node.getbalance(account.name))
             account.verify(node)
         node.generate(101)
-        expected_account_balances = {"": 5200}
+
+        # The fee is subtracted because it is not returned to the miners
+        total = 5200
+        for txid in send_txs:
+            total -= -node.gettransaction(txid)["fee"]
+
+        expected_account_balances = {"": total}
         for account in accounts:
             expected_account_balances[account.name] = 0
         assert_equal(node.listaccounts(), expected_account_balances)
-        assert_equal(node.getbalance(""), 5200)
+        assert_equal(node.getbalance(""), total)
         
         # Check that setaccount can assign an account to a new unused address.
         for account in accounts:
