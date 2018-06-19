@@ -115,7 +115,6 @@ class FullBlockTest(ComparisonTestFramework):
         if spend == None:
             block = create_block(base_block_hash, coinbase, block_time)
         else:
-            coinbase.vout[0].nValue += spend.tx.vout[spend.n].nValue - 1 # all but one satoshi to fees
             coinbase.rehash()
             block = create_block(base_block_hash, coinbase, block_time)
             tx = create_transaction(spend.tx, spend.n, b"", 1, script)  # spend 1 satoshi
@@ -971,7 +970,7 @@ class FullBlockTest(ComparisonTestFramework):
         #       creates a tx that has 9 satoshis from out[20] go to fees
         #       this fails because the coinbase is trying to claim 1 satoshi too much in fees
         #
-        # b69 - coinbase with extra 10 satoshis, and a tx that gives a 10 satoshi fee
+        # b69 - a tx that gives a 10 satoshi fee, but fee is not returned to the miners
         #       this succeeds
         #
         tip(65)
@@ -981,7 +980,7 @@ class FullBlockTest(ComparisonTestFramework):
         yield rejected(RejectResult(16, b'bad-cb-amount'))
 
         tip(65)
-        b69 = block(69, additional_coinbase_value=10)
+        b69 = block(69, additional_coinbase_value=0)
         tx = create_and_sign_tx(out[20].tx, out[20].n, out[20].tx.vout[0].nValue-10)
         update_block(69, [tx])
         yield accepted()
