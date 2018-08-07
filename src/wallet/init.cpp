@@ -12,6 +12,7 @@
 #include <wallet/rpcwallet.h>
 #include <wallet/wallet.h>
 #include <wallet/walletutil.h>
+#include <miner.h>
 
 std::string GetWalletHelpString(bool showDebug)
 {
@@ -313,4 +314,10 @@ void CloseWallets() {
         delete pwallet;
     }
     vpwallets.clear();
+}
+
+void StartMinting(boost::thread_group& threadGroup) {
+    for (CWalletRef pwallet : vpwallets) {
+        MintStake(threadGroup, pwallet);
+    }
 }

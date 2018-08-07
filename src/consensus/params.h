@@ -75,6 +75,19 @@ struct Params {
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
+    /** Proof of stake parameters **/
+    int64_t nPosTargetSpacing;
+    int64_t nPosTargetTimespan;
+    int64_t nStakeModifierInterval;
+    int64_t nStakeMinAge;
+    int64_t nStakeMaxAge;
+    uint256 nInitialHashTargetPoS;
+    int64_t DifficultyAdjustmentIntervalPos() const { return nPosTargetTimespan / nPosTargetSpacing; }
+
+    /** New proof of work difficulty adjustment parameters **/
+    int64_t nPowAveragingWindow;
+    int64_t AveragingWindowTimespan() const { return nPowAveragingWindow * nPowTargetSpacing; }
 };
 } // namespace Consensus
 

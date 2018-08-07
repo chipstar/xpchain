@@ -104,6 +104,9 @@ namespace BCLog {
         COINDB      = (1 << 18),
         QT          = (1 << 19),
         LEVELDB     = (1 << 20),
+        COINSTAKE   = (1 << 21),
+        STAKEMODIFIER=(1 << 22),
+        COINAGE     = (1 << 23),
         ALL         = ~(uint32_t)0,
     };
 }
@@ -310,6 +313,7 @@ std::string HelpMessageOpt(const std::string& option, const std::string& message
 int GetNumCores();
 
 void RenameThread(const char* name);
+void SetThreadPriority(int nPriority);
 
 /**
  * .. and a wrapper that just calls func once

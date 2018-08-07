@@ -13,6 +13,8 @@ std::string strMiscWarning;
 bool fLargeWorkForkFound = false;
 bool fLargeWorkInvalidChainFound = false;
 
+std::string strMintWarning;
+
 void SetMiscWarning(const std::string& strWarning)
 {
     LOCK(cs_warnings);

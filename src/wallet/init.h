@@ -11,6 +11,10 @@
 class CRPCTable;
 class CScheduler;
 
+namespace boost {
+    class thread_group;
+} // namespace boost
+
 //! Return the wallets help message.
 std::string GetWalletHelpString(bool showDebug);
 
@@ -39,5 +43,7 @@ void StopWallets();
 
 //! Close all wallets.
 void CloseWallets();
+
+void StartMinting(boost::thread_group& threadGroup);
 
 #endif // BITCOIN_WALLET_INIT_H

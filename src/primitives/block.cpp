@@ -9,10 +9,19 @@
 #include <tinyformat.h>
 #include <utilstrencodings.h>
 #include <crypto/common.h>
+#include <chainparams.h>
+#include <arith_uint256.h>
+#ifndef NO_UTIL_LOG
+#include <util.h>
+#else
+#define LogPrint(...)
+#endif
 
 uint256 CBlockHeader::GetHash() const
 {
-    return SerializeHash(*this);
+    CHashWriter writer(SER_GETHASH, PROTOCOL_VERSION | SERIALIZE_BLOCK_LEGACY);
+    ::Serialize(writer, *this);
+    return writer.GetHash();
 }
 
 std::string CBlock::ToString() const
@@ -29,4 +38,11 @@ std::string CBlock::ToString() const
         s << "  " << tx->ToString() << "\n";
     }
     return s.str();
+}
+
+unsigned int CBlock::GetStakeEntropyBit(int32_t height) const
+{
+    unsigned int nEntropyBit = UintToArith256(GetHash()).GetLow64() & 1llu;// last bit of block hash
+    LogPrint(BCLog::STAKEMODIFIER, "GetStakeEntropyBit(v0.3.5+): nTime=%u hashBlock=%s entropybit=%d\n", nTime, GetHash().ToString(), nEntropyBit);
+    return nEntropyBit;
 }

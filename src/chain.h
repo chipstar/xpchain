@@ -219,6 +219,53 @@ public:
     //! (memory only) Maximum nTime in the chain up to and including this block.
     unsigned int nTimeMax;
 
+    //pos
+    uint32_t nFlags; // block index flags
+    uint64_t nStakeModifier; // hash modifier for proof-of-stake
+    uint32_t nStakeModifierChecksum; // checksum of index; in-memory only
+    uint256 hashProofOfStake;
+    COutPoint outStakeReward; // coinbase output of proof-of-stake block
+
+    bool IsProofOfWork() const
+    {
+        return !(nFlags & BLOCK_PROOF_OF_STAKE);
+    }
+
+    bool IsProofOfStake() const
+    {
+        return (nFlags & BLOCK_PROOF_OF_STAKE);
+    }
+
+    void SetProofOfStake()
+    {
+        nFlags |= BLOCK_PROOF_OF_STAKE;
+    }
+
+    uint32_t GetStakeEntropyBit() const
+    {
+        return ((nFlags & BLOCK_STAKE_ENTROPY) >> 1);
+    }
+
+    bool SetStakeEntropyBit(uint32_t nEntropyBit)
+    {
+        if (nEntropyBit > 1)
+            return false;
+        nFlags |= (nEntropyBit ? BLOCK_STAKE_ENTROPY : 0);
+        return true;
+    }
+
+    bool GeneratedStakeModifier() const
+    {
+        return (nFlags & BLOCK_STAKE_MODIFIER);
+    }
+
+    void SetStakeModifier(uint64_t nModifier, bool fGeneratedStakeModifier)
+    {
+        nStakeModifier = nModifier;
+        if (fGeneratedStakeModifier)
+            nFlags |= BLOCK_STAKE_MODIFIER;
+    }
+
     void SetNull()
     {
         phashBlock = nullptr;
@@ -240,6 +287,12 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
+
+        nFlags = 0;
+        nStakeModifier = 0;
+        nStakeModifierChecksum = 0;
+        hashProofOfStake = uint256();
+        outStakeReward.SetNull();
     }
 
     CBlockIndex()
@@ -256,6 +309,7 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        nFlags         = block.nFlags;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -286,6 +340,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nFlags         = (nFlags & BLOCK_PROOF_OF_STAKE) | (nFlags & BLOCK_NEW_FORMAT);
         return block;
     }
 
@@ -322,10 +377,13 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
-            pprev, nHeight,
-            hashMerkleRoot.ToString(),
-            GetBlockHash().ToString());
+        return strprintf("CBlockIndex(nprev=%08x, nFile=%d, nHeight=%d, nFlags=(%s)(%d)(%s), nStakeModifier=%016llx, nStakeModifierChecksum=%08x, hashProofOfStake=%s, merkle=%s, hashBlock=%s)",
+                         pprev, nFile, nHeight,
+                         GeneratedStakeModifier() ? "MOD" : "-", GetStakeEntropyBit(), IsProofOfStake()? "PoS" : "PoW",
+                         nStakeModifier, nStakeModifierChecksum,
+                         hashProofOfStake.ToString().c_str(),
+                         hashMerkleRoot.ToString().substr(0,10).c_str(),
+                         GetBlockHash().ToString().substr(0,20).c_str());
     }
 
     //! Check whether this block index entry is valid up to the passed validity level.
@@ -398,6 +456,17 @@ public:
         if (nStatus & BLOCK_HAVE_UNDO)
             READWRITE(VARINT(nUndoPos));
 
+        READWRITE(nFlags);
+        READWRITE(nStakeModifier);
+        if (IsProofOfStake()) {
+            READWRITE(hashProofOfStake);
+            READWRITE(outStakeReward);
+        }
+        else if (ser_action.ForRead()) {
+            const_cast<CDiskBlockIndex*>(this)->hashProofOfStake = uint256();
+            const_cast<CDiskBlockIndex*>(this)->outStakeReward.SetNull();
+        }
+
         // block header
         READWRITE(this->nVersion);
         READWRITE(hashPrev);
@@ -416,6 +485,7 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        block.nFlags          = (nFlags & BLOCK_PROOF_OF_STAKE);
         return block.GetHash();
     }
 
