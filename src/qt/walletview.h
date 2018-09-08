@@ -19,6 +19,7 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
+class MintingView;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -68,6 +69,8 @@ private:
 
     TransactionView *transactionView;
 
+    QWidget *mintingPage;
+
     QProgressDialog *progressDialog;
     const PlatformStyle *platformStyle;
 
@@ -80,6 +83,8 @@ public Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+
+    void gotoMintingPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
